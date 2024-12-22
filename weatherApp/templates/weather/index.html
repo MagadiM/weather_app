@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>What's the Weather Like?</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+</head>
+<body>
+    <!-- Header Section -->
+    <section class="hero is-primary">
+        <div class="hero-body" style="background-color: #3b0369;">
+            <div class="container">
+                <h1 class="title" style="text-align: center;">The Weather Today</h1>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section -->
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="field has-addons">
+                            <div class="control is-expanded">
+                                <!-- Correctly render the form field -->
+                                {{ form.name }}
+                            </div>
+                            <div class="control">
+                                <button class="button is-info" type="submit" style="background-color: #3b0369;">
+                                    Add City
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weather Data Section -->
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-offset-4 is-4">
+                    {% for weather in weather_data %}
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-left">
+                                <figure class="image is-50x50">
+                                    <!-- Dynamic weather icon -->
+                                    <img src="http://openweathermap.org/img/w/{{ weather.icon }}.png" alt="Weather Icon">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong>{{ weather.city }}</strong>
+                                        <br>
+                                        <span>{{ weather.temperature }} °F</span>
+                                        <br>
+                                        <small>{{ weather.description }}</small>
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    {% empty %}
+                    <div class="notification is-warning">
+                        No weather data available. Add a city to get started!
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>&copy; {{ year|default:"2024" }} Weather App /t All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
